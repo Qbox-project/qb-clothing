@@ -2,7 +2,7 @@
 Clothing for QB-Core Framework :dress:
 
 ## Dependencies
-- [qb-core](https://github.com/qbcore-framework/qb-core)
+- [qb-core](https://github.com/Qbox-project/qb-core)
 
 ## Screenshots
 ![image](https://user-images.githubusercontent.com/66404074/153545004-6337e685-d3a5-478c-8fa2-e50f4b1d2030.png)
@@ -38,6 +38,3 @@ Clothing for QB-Core Framework :dress:
 ensure qb-core
 ensure qb-clothing
 ```
-
-## Configuration
-Please see config.lua
