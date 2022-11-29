@@ -4,7 +4,7 @@ RegisterNetEvent('qb-clothing:saveSkin', function(model, skin)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
 
-    if model ~= nil and skin ~= nil then
+    if model and skin then
         -- TODO: Update primary key to be citizenid so this can be an insert on duplicate update query
         MySQL.query('DELETE FROM playerskins WHERE citizenid = ?', {
             Player.PlayerData.citizenid
@@ -38,7 +38,7 @@ RegisterNetEvent("qb-clothes:saveOutfit", function(outfitName, model, skinData)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
 
-    if model ~= nil and skinData ~= nil then
+    if model and skinData then
         local outfitId = "outfit-" .. math.random(1, 10) .. "-" .. math.random(1111, 9999)
 
         MySQL.insert('INSERT INTO player_outfits (citizenid, outfitname, model, skin, outfitId) VALUES (?, ?, ?, ?, ?)', {

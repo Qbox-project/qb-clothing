@@ -196,7 +196,6 @@ local skinData = {
         defaultItem = 0,
         defaultTexture = 0
     },
-
     ["nose_4"] = {
         item = 0,
         texture = 0,
@@ -294,6 +293,35 @@ local skinData = {
         defaultTexture = 0
     }
 }
+local faceProps = {
+    [1] = {
+        ["Prop"] = -1,
+        ["Texture"] = -1
+    },
+    [2] = {
+        ["Prop"] = -1,
+        ["Texture"] = -1
+    },
+    [3] = {
+        ["Prop"] = -1,
+        ["Texture"] = -1
+    },
+    [4] = {
+        ["Prop"] = -1,
+        ["Palette"] = -1,
+        ["Texture"] = -1
+    }, -- this is actually a pedtexture variations, not a prop
+    [5] = {
+        ["Prop"] = -1,
+        ["Palette"] = -1,
+        ["Texture"] = -1
+    }, -- this is actually a pedtexture variations, not a prop
+    [6] = {
+        ["Prop"] = -1,
+        ["Palette"] = -1,
+        ["Texture"] = -1
+    } -- this is actually a pedtexture variations, not a prop
+}
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     TriggerServerEvent("qb-clothes:loadPlayerSkin")
@@ -327,13 +355,13 @@ function GetPositionByRelativeHeading(ped, head, dist)
 end
 
 CreateThread(function()
-    for k, _ in pairs (Config.Stores) do
+    for k, _ in pairs(Config.Stores) do
         if Config.Stores[k].shopType == "clothing" then
             local clothingShop = AddBlipForCoord(Config.Stores[k].coords)
 
             SetBlipSprite(clothingShop, 366)
             SetBlipColour(clothingShop, 47)
-            SetBlipScale (clothingShop, 0.7)
+            SetBlipScale(clothingShop, 0.7)
             SetBlipAsShortRange(clothingShop, true)
 
             BeginTextCommandSetBlipName("STRING")
@@ -346,7 +374,7 @@ CreateThread(function()
 
             SetBlipSprite(barberShop, 71)
             SetBlipColour(barberShop, 0)
-            SetBlipScale (barberShop, 0.7)
+            SetBlipScale(barberShop, 0.7)
             SetBlipAsShortRange(barberShop, true)
 
             BeginTextCommandSetBlipName("STRING")
@@ -359,7 +387,7 @@ CreateThread(function()
 
             SetBlipSprite(surgeonShop, 71)
             SetBlipColour(surgeonShop, 0)
-            SetBlipScale  (surgeonShop, 0.7)
+            SetBlipScale(surgeonShop, 0.7)
             SetBlipAsShortRange(surgeonShop, true)
 
             BeginTextCommandSetBlipName("STRING")
@@ -372,80 +400,127 @@ end)
 RegisterNetEvent('qb-clothing:client:getOutfits', function(requiredJob, gradeLevel)
     local gender = "male"
 
-    if QBCore.Functions.GetPlayerData().charinfo.gender == 1 then gender = "female" end
-    
+    if QBCore.Functions.GetPlayerData().charinfo.gender == 1 then
+        gender = "female"
+    end
+
     QBCore.Functions.TriggerCallback('qb-clothing:server:getOutfits', function(result)
         openMenu({
-            {menu = "roomOutfits", label = "Presets", selected = true, outfits = Config.Outfits[requiredJob][gender][gradeLevel]},
-            {menu = "myOutfits", label = "My Outfits", selected = false, outfits = result},
-            {menu = "character", label = "Clothing", selected = false},
-            {menu = "accessoires", label = "Accessories", selected = false}
+            {
+                menu = "roomOutfits",
+                label = "Presets",
+                selected = true,
+                outfits = Config.Outfits[requiredJob][gender][gradeLevel]
+            },
+            {
+                menu = "myOutfits",
+                label = "My Outfits",
+                selected = false,
+                outfits = result
+            },
+            {
+                menu = "character",
+                label = "Clothing",
+                selected = false
+            },
+            {
+                menu = "accessoires",
+                label = "Accessories",
+                selected = false
+            }
         })
     end)
 end)
 
 if Config.UseTarget then
-
     CreateThread(function()
         for k, v in pairs(Config.Stores) do
             local opts = {}
+
             if v.shopType == 'barber' then
                 opts = {
                     action = function()
                         customCamLocation = nil
+
                         openMenu({
-                            {menu = "clothing", label = "Hair", selected = true},
+                            {
+                                menu = "clothing",
+                                label = "Hair",
+                                selected = true
+                            }
                         })
                     end,
                     icon = "fas fa-chair-office",
-                    label = "Barber",
+                    label = "Barber"
                 }
             elseif v.shopType == 'clothing' then
                 opts = {
                     action = function()
                         customCamLocation = nil
+
                         openMenu({
-                            {menu = "character", label = "Clothing", selected = true},
-                            {menu = "accessoires", label = "Accessories", selected = false}
+                            {
+                                menu = "character",
+                                label = "Clothing",
+                                selected = true
+                            },
+                            {
+                                menu = "accessoires",
+                                label = "Accessories",
+                                selected = false
+                            }
                         })
                     end,
                     icon = "fas fa-clothes-hanger",
-                    label = "Clothing Store",
+                    label = "Clothing Store"
                 }
             elseif v.shopType == 'surgeon' then
                 opts = {
                     action = function()
                         customCamLocation = nil
+
                         openMenu({
-                            {menu = "clothing", label = "Features", selected = true},
+                            {
+                                menu = "clothing",
+                                label = "Features",
+                                selected = true
+                            }
                         })
                     end,
                     icon = "fas fa-scalpel",
-                    label = "Plastic Surgeon",
+                    label = "Plastic Surgeon"
                 }
             end
 
-            exports['qb-target']:AddBoxZone(v.shopType .. k, v.coords, v.length, v.width, {
-                name = v.shopType .. k,
-                minZ = v.coords.z - 1,
-                maxZ = v.coords.z + 1
-            }, {
+            exports.ox_target:addBoxZone({
+                coords = v.coords,
+                size = vec3(2, 2, 2),
+                rotation = 0.0,
                 options = {
                     {
-                        type = "client",
-                        action = opts.action,
+                        name = 'qb-clothing:store-' .. v.shopType .. '-' .. k,
                         icon = opts.icon,
-                        label = opts.label
+                        label = opts.label,
+                        distance = 3,
+                        canInteract = function(_, _, _, _)
+                            return PlayerData.job.name == v.requiredJob
+                        end,
+                        onSelect = function(_)
+                            opts.action()
+                        end
                     }
-                },
-                distance = 3
+                }
             })
         end
 
-        for k, v in pairs(Config.ClothingRooms) do
+        for _, v in pairs(Config.ClothingRooms) do
+            local canInteract = false
             local action
 
             if v.isGang then
+                canInteract = function(requiredJob)
+                    return PlayerData.gang.name == requiredJob
+                end
                 action = function()
                     customCamLocation = v.cameraLocation
 
@@ -454,6 +529,9 @@ if Config.UseTarget then
                     TriggerEvent('qb-clothing:client:getOutfits', v.requiredJob, gradeLevel)
                 end
             else
+                canInteract = function(requiredJob)
+                    return PlayerData.job.name == requiredJob
+                end
                 action = function()
                     customCamLocation = v.cameraLocation
 
@@ -463,25 +541,25 @@ if Config.UseTarget then
                 end
             end
 
-            exports['qb-target']:AddBoxZone('clothing_' .. v.requiredJob .. k, v.coords, v.length, v.width, {
-                name = 'clothing_' .. v.requiredJob .. k,
-                minZ = v.coords.z - 2,
-                maxZ = v.coords.z + 2
-            }, {
+            exports.ox_target:addBoxZone({
+                coords = v.coords,
+                size = vec3(2, 2, 2),
+                rotation = 0.0,
                 options = {
                     {
-                        type = "client",
-                        action = action,
-                        icon = "fas fa-sign-in-alt",
-                        label = "Clothing",
-                        job = v.requiredJob
+                        name = 'qb-clothing:clothing',
+                        icon = 'fas fa-sign-in-alt',
+                        label = 'Clothing',
+                        distance = 3,
+                        canInteract = function(_, _, _, _)
+                            return canInteract(v.requiredJob)
+                        end,
+                        onSelect = action
                     }
-                },
-                distance = 3
+                }
             })
         end
     end)
-
 else
     CreateThread(function()
         for _, v in pairs(Config.Stores) do
@@ -535,7 +613,7 @@ else
     end)
 
     -- Clothing Thread
-    CreateThread(function ()
+    CreateThread(function()
         Wait(1000)
 
         while true do
@@ -886,7 +964,7 @@ function enableCam()
         SetCamRot(cam, 0.0, 0.0, GetEntityHeading(cache.ped) + 180)
     end
 
-    if customCamLocation ~= nil then
+    if customCamLocation then
         SetCamCoord(cam, customCamLocation.x, customCamLocation.y, customCamLocation.z)
     end
 
@@ -1592,7 +1670,7 @@ RegisterNetEvent('qb-clothes:client:CreateFirstCharacter', function()
 end)
 
 RegisterNetEvent("qb-clothes:loadSkin", function(_, model, data)
-    model = model ~= nil and tonumber(model) or false
+    model = model and tonumber(model) or false
 
     CreateThread(function()
         lib.requestModel(model)
@@ -1610,7 +1688,9 @@ RegisterNetEvent("qb-clothes:loadSkin", function(_, model, data)
 end)
 
 RegisterNetEvent('qb-clothing:client:loadPlayerClothing', function(data, ped)
-    if ped == nil then ped = cache.ped end
+    if not ped then
+        ped = cache.ped
+    end
 
     for i = 0, 11 do
         SetPedComponentVariation(ped, i, 0, 0, 0)
@@ -1773,7 +1853,7 @@ function typeof(var)
     
     local _meta = getmetatable(var)
 
-    if _meta ~= nil and _meta._NAME ~= nil then
+    if _meta and _meta._NAME then
         return _meta._NAME
     else
         return _type
@@ -1802,47 +1882,47 @@ RegisterNetEvent('qb-clothing:client:loadOutfit', function(oData)
     end
 
     -- Pants
-    if data["pants"] ~= nil then
+    if data["pants"] then
         SetPedComponentVariation(cache.ped, 4, data["pants"].item, data["pants"].texture, 0)
     end
 
     -- Arms
-    if data["arms"] ~= nil then
+    if data["arms"] then
         SetPedComponentVariation(cache.ped, 3, data["arms"].item, data["arms"].texture, 0)
     end
 
     -- T-Shirt
-    if data["t-shirt"] ~= nil then
+    if data["t-shirt"] then
         SetPedComponentVariation(cache.ped, 8, data["t-shirt"].item, data["t-shirt"].texture, 0)
     end
 
     -- Vest
-    if data["vest"] ~= nil then
+    if data["vest"] then
         SetPedComponentVariation(cache.ped, 9, data["vest"].item, data["vest"].texture, 0)
     end
 
     -- Torso 2
-    if data["torso2"] ~= nil then
+    if data["torso2"] then
         SetPedComponentVariation(cache.ped, 11, data["torso2"].item, data["torso2"].texture, 0)
     end
 
     -- Shoes
-    if data["shoes"] ~= nil then
+    if data["shoes"] then
         SetPedComponentVariation(cache.ped, 6, data["shoes"].item, data["shoes"].texture, 0)
     end
 
     -- Bag
-    if data["bag"] ~= nil then
+    if data["bag"] then
         SetPedComponentVariation(cache.ped, 5, data["bag"].item, data["bag"].texture, 0)
     end
 
     -- Badge
-    if data["decals"] ~= nil then
+    if data["decals"] then
         SetPedComponentVariation(cache.ped, 10, data["decals"].item, data["decals"].texture, 0)
     end
 
     -- Accessory
-    if data["accessory"] ~= nil then
+    if data["accessory"] then
         if QBCore.Functions.GetPlayerData().metadata["tracker"] then
             SetPedComponentVariation(cache.ped, 7, 13, 0, 0)
         else
@@ -1857,17 +1937,17 @@ RegisterNetEvent('qb-clothing:client:loadOutfit', function(oData)
     end
 
     -- Mask
-    if data["mask"] ~= nil then
+    if data["mask"] then
         SetPedComponentVariation(cache.ped, 1, data["mask"].item, data["mask"].texture, 0)
     end
 
     -- Bag
-    if data["bag"] ~= nil then
+    if data["bag"] then
         SetPedComponentVariation(cache.ped, 5, data["bag"].item, data["bag"].texture, 0)
     end
 
     -- Hat
-    if data["hat"] ~= nil then
+    if data["hat"] then
         if data["hat"].item ~= -1 and data["hat"].item ~= 0 then
             SetPedPropIndex(cache.ped, 0, data["hat"].item, data["hat"].texture, true)
         else
@@ -1876,7 +1956,7 @@ RegisterNetEvent('qb-clothing:client:loadOutfit', function(oData)
     end
 
     -- Glass
-    if data["glass"] ~= nil then
+    if data["glass"] then
         if data["glass"].item ~= -1 and data["glass"].item ~= 0 then
             SetPedPropIndex(cache.ped, 1, data["glass"].item, data["glass"].texture, true)
         else
@@ -1885,7 +1965,7 @@ RegisterNetEvent('qb-clothing:client:loadOutfit', function(oData)
     end
 
     -- Ear
-    if data["ear"] ~= nil then
+    if data["ear"] then
         if data["ear"].item ~= -1 and data["ear"].item ~= 0 then
             SetPedPropIndex(cache.ped, 2, data["ear"].item, data["ear"].texture, true)
         else
@@ -1893,21 +1973,12 @@ RegisterNetEvent('qb-clothing:client:loadOutfit', function(oData)
         end
     end
 
-    if oData.outfitName ~= nil then
+    if oData.outfitName then
         QBCore.Functions.Notify("You have chosen "..oData.outfitName.."! Press Confirm to confirm outfit.")
     end
 end)
 
-local faceProps = {
-    [1] = { ["Prop"] = -1, ["Texture"] = -1 },
-    [2] = { ["Prop"] = -1, ["Texture"] = -1 },
-    [3] = { ["Prop"] = -1, ["Texture"] = -1 },
-    [4] = { ["Prop"] = -1, ["Palette"] = -1, ["Texture"] = -1 }, -- this is actually a pedtexture variations, not a prop
-    [5] = { ["Prop"] = -1, ["Palette"] = -1, ["Texture"] = -1 }, -- this is actually a pedtexture variations, not a prop
-    [6] = { ["Prop"] = -1, ["Palette"] = -1, ["Texture"] = -1 } -- this is actually a pedtexture variations, not a prop
-}
-
-RegisterNetEvent("qb-clothing:client:adjustfacewear",function(type)
+RegisterNetEvent("qb-clothing:client:adjustfacewear", function(type)
     if QBCore.Functions.GetPlayerData().metadata["ishandcuffed"] then
         return
     end
