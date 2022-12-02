@@ -683,7 +683,7 @@ Config.Outfits = {
                     }
                 }
             },
-			-- Gender
+            -- Gender
             [1] = {
                 -- Grade Level
                 [1] = {
@@ -736,7 +736,7 @@ Config.Outfits = {
                     }
                 }
             },
-			-- Gender
+            -- Gender
             [2] = {
                 -- Grade Level
                 [1] = {
@@ -805,7 +805,7 @@ Config.Outfits = {
                     }
                 }
             },
-			-- Gender
+            -- Gender
             [3] = {
                 -- Grade Level
                 [1] = {
@@ -889,7 +889,7 @@ Config.Outfits = {
                     }
                 }
             },
-			-- Gender
+            -- Gender
             [4] = {
                 -- Grade Level
                 [1] = {
@@ -1063,7 +1063,7 @@ Config.Outfits = {
                     }
                 }
             },
-			-- Gender
+            -- Gender
             [2] = {
                 -- Grade Level
                 [1] = {
@@ -1131,7 +1131,7 @@ Config.Outfits = {
                     }
                 }
             },
-			-- Gender
+            -- Gender
             [3] = {
                 -- Grade Level
                 [1] = {
@@ -1215,7 +1215,7 @@ Config.Outfits = {
                     }
                 }
             },
-			-- Gender
+            -- Gender
             [4] = {
                 -- Grade Level
                 [1] = {
@@ -1325,7 +1325,7 @@ Config.Outfits = {
                     }
                 }
             },
-			-- Gender
+            -- Gender
             [1] = {
                 -- Grade Level
                 [1] = {
@@ -1346,7 +1346,7 @@ Config.Outfits = {
                     }
                 }
             },
-			-- Gender
+            -- Gender
             [2] = {
                 -- Grade Level
                 [1] = {
@@ -1367,7 +1367,7 @@ Config.Outfits = {
                     }
                 }
             },
-			-- Gender
+            -- Gender
             [3] = {
                 -- Grade Level
                 [1] = {
@@ -1388,7 +1388,7 @@ Config.Outfits = {
                     }
                 }
             },
-			-- Gender
+            -- Gender
             [4] = {
                 -- Grade Level
                 [1] = {
@@ -1451,7 +1451,7 @@ Config.Outfits = {
                     }
                 }
             },
-			-- Gender
+            -- Gender
             [2] = {
                 -- Grade Level
                 [1] = {
@@ -1471,7 +1471,7 @@ Config.Outfits = {
                     }
                 }
             },
-			-- Gender
+            -- Gender
             [3] = {
                 -- Grade Level
                 [1] = {
@@ -1491,7 +1491,7 @@ Config.Outfits = {
                     }
                 }
             },
-			-- Gender
+            -- Gender
             [4] = {
                 -- Grade Level
                 [1] = {

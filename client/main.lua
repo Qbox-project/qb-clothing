@@ -450,7 +450,7 @@ if Config.UseTarget then
                             }
                         })
                     end,
-                    icon = "fas fa-chair-office",
+                    icon = "fa-solid fa-feather",
                     label = "Barber"
                 }
             elseif v.shopType == 'clothing' then
@@ -471,7 +471,7 @@ if Config.UseTarget then
                             }
                         })
                     end,
-                    icon = "fas fa-clothes-hanger",
+                    icon = "fa-solid fa-shirt",
                     label = "Clothing Store"
                 }
             elseif v.shopType == 'surgeon' then
@@ -487,7 +487,7 @@ if Config.UseTarget then
                             }
                         })
                     end,
-                    icon = "fas fa-scalpel",
+                    icon = "fa-solid fa-face-meh-blank",
                     label = "Plastic Surgeon"
                 }
             end
@@ -548,7 +548,7 @@ if Config.UseTarget then
                 options = {
                     {
                         name = 'qb-clothing:clothing',
-                        icon = 'fas fa-sign-in-alt',
+                        icon = "fa-solid fa-right-to-bracket",
                         label = 'Clothing',
                         distance = 3,
                         canInteract = function(_, _, _, _)
@@ -929,7 +929,10 @@ function openMenu(allowedMenus)
 end
 
 RegisterNUICallback('TrackerError', function(_, cb)
-    QBCore.Functions.Notify("You can't remove your ankle bracelet ..", "error")
+    lib.notify({
+        description = "You can't remove your ankle bracelet ..",
+        type = 'error'
+    })
 
     cb('ok')
 end)
@@ -1188,7 +1191,9 @@ end)
 RegisterNUICallback('removeOutfit', function(data, cb)
     TriggerServerEvent('qb-clothing:server:removeOutfit', data.outfitName, data.outfitId)
 
-    QBCore.Functions.Notify("You have deleted your" .. data.outfitName .. " outfit!")
+    lib.notify({
+        description = "You have deleted your" .. data.outfitName .. " outfit!"
+    })
 
     cb('ok')
 end)
@@ -1974,7 +1979,9 @@ RegisterNetEvent('qb-clothing:client:loadOutfit', function(oData)
     end
 
     if oData.outfitName then
-        QBCore.Functions.Notify("You have chosen "..oData.outfitName.."! Press Confirm to confirm outfit.")
+        lib.notify({
+            description = "You have chosen " .. oData.outfitName .. "! Press Confirm to confirm outfit."
+        })
     end
 end)
 
